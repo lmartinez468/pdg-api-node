@@ -13,12 +13,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {  
+    "express": "^4.17.2",
     "mongodb": "^4.3.0"
   },
   "devDependencies": {
     "@types/express": "^4.17.13",
     "dotenv": "^11.0.0",
-    "express": "^4.17.2",
     "nodemon": "^2.0.15",
     "ts-node": "^10.4.0",
     "tslint": "^6.1.3",
