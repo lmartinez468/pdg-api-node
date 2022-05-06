@@ -16,19 +16,23 @@ const client = new MongoClient(uri);
 client.connect(async (errs: any) => {
 
   try {
-
-    if(errs) throw errs;
+    if (errs) throw errs;
 
 
     app.get("/getClient/:customerId", async (req, res, err) => {
       const collection: Collection = client.db("DB").collection('clients')
       const customerId: number = +req.params.customerId;
-      const clientData = await getClient(collection, customerId);
-      // if (err) throw err;
-      if (clientData.length) {
-        res.status(200).json(clientData[0]);
+      if (isNaN(customerId)) {
+        res.status(404).json({ err: "El cliente introducido tiene que ser numérico." });
+
       } else {
-        res.status(404).json({ err: `No se encontro el cliente ${customerId}` });
+        const clientData = await getClient(collection, customerId);
+        // if (err) throw err;
+        if (clientData.length) {
+          res.status(200).json(clientData[0]);
+        } else {
+          res.status(404).json({ err: `No se encontro el cliente ${customerId}` });
+        }
       }
     })
 
