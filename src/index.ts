@@ -5,8 +5,8 @@ import express from "express";
 dotenv.config();
 const app = express()
 
-app.listen(3001, () => {
-  "server started in the port 3001"
+app.listen(process.env.PORT || 3001, () => {
+  "server started"
 })
 
 const username = process.env.mongoClient;
