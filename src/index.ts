@@ -13,17 +13,18 @@ const username = process.env.mongoClient;
 const password = process.env.mongoPassword;
 const uri = `mongodb+srv://${username}:${password}@clientdata.dluae.mongodb.net/DB?retryWrites=true&w=majority`;
 const client = new MongoClient(uri);
-
 client.connect(async (errs: any) => {
+
   try {
+
     if(errs) throw errs;
 
-    const collection: Collection = client.db("DB").collection('clients')
 
     app.get("/getClient/:customerId", async (req, res, err) => {
+      const collection: Collection = client.db("DB").collection('clients')
       const customerId: number = +req.params.customerId;
       const clientData = await getClient(collection, customerId);
-      if (err) throw err;
+      // if (err) throw err;
       if (clientData.length) {
         res.status(200).json(clientData[0]);
       } else {
@@ -32,23 +33,38 @@ client.connect(async (errs: any) => {
     })
 
     app.get("/getProducts", async (_, res, err) => {
-      const collection2: Collection = await client.db("DB").collection('products')
+      const collection2: Collection = client.db("DB").collection('products')
       const bestProducts = await getProducts(collection2);
 
-      if (err) throw err;
+      // if (err) throw err;
       if (bestProducts) {
         res.status(200).json(bestProducts);
       } else {
         res.status(404).json({ err: `No se encontraron los productos` });
       }
     })
-  } catch (errs) {
-    console.log("Ocurrio un Error ->", errs);
+
+    app.get("/getProductsMonth", async (_, res, err) => {
+      const collection2: Collection = client.db("DB").collection('bestLastMonth')
+      const bestProducts = await getProducts(collection2);
+
+      // if (err) throw err;
+      if (bestProducts) {
+        res.status(200).json(bestProducts);
+      } else {
+        res.status(404).json({ err: `No se encontraron los productos` });
+      }
+    })
+
+
+  } catch (errr) {
+    console.log("Ocurrio un Error ****** ->", errr, errs);
   }
 });
 
 const getClient = async (collection: Collection, customerId: number) => await
-  collection.find({ customerId: customerId }).toArray();
+  collection.find({ customerId }).toArray();
 
 const getProducts = async (collection: Collection) => await
   collection.find({}).toArray();
+
