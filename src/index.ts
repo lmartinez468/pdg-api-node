@@ -1,4 +1,4 @@
-import { Collection, MongoClient, ObjectId } from 'mongodb';
+import { Collection, MongoClient } from 'mongodb';
 import dotenv from 'dotenv';
 import express from "express";
 
